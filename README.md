@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Retail Store Sample App - GitOps with Amazon EKS Auto Mode
  
 ![Banner](./docs/images/banner.png)
@@ -398,3 +399,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICE
 
 </div>
 
+=======
+# retail-store-sample-app
+Sample project used to create a infrastructure using Terraform, Docker, Kubernetes and Argocd.
+>>>>>>> 93e24af10db7287e29ebe14820f3c95b3669b321
