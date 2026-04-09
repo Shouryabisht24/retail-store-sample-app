@@ -33,7 +33,7 @@ resource "helm_release" "argocd" {
           type = "ClusterIP"
         }
         ingress = {
-          enabled = false  # We'll use port-forward for access
+          enabled = true
         }
         # Enable insecure mode for easier local access
         extraArgs = [
@@ -98,8 +98,15 @@ resource "kubectl_manifest" "argocd_projects" {
   depends_on = [helm_release.argocd]
 }
 
+resource "kubectl_manifest" "argocd_monitoring" {
+  for_each   = fileset("${path.module}/../argocd/monitoring", "*.yaml")
+  yaml_body  = file("${path.module}/../argocd/monitoring/${each.value}")
+  depends_on = [kubectl_manifest.argocd_projects]
+}
+
 resource "kubectl_manifest" "argocd_apps" {
   for_each   = fileset("${path.module}/../argocd/applications", "*.yaml")
   yaml_body  = file("${path.module}/../argocd/applications/${each.value}")
-  depends_on = [kubectl_manifest.argocd_projects]
+  depends_on = [kubectl_manifest.argocd_monitoring]
 }
+
