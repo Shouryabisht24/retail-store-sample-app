@@ -24,7 +24,7 @@ module "eks_addons" {
   # =============================================================================
   # NGINX INGRESS CONTROLLER - Load Balancing and Routing
   # =============================================================================
-  enable_ingress_nginx = true
+  enable_ingress_nginx = false
   ingress_nginx = {
     most_recent = true
     namespace   = "ingress-nginx"

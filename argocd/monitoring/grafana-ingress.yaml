@@ -4,9 +4,25 @@ metadata:
   name: grafana-ingress
   namespace: monitoring
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # 1. Tell EKS to use the AWS Load Balancer Controller
+    kubernetes.io/ingress.class: alb
+    
+    # 2. Make the ALB public-facing
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    
+    # 3. Use 'ip' mode for better performance (routes directly to pods)
+    alb.ingress.kubernetes.io/target-type: ip
+    
+    # 4. SSL Configuration: Listen on 443 and 80
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    
+    # 5. Attach your ACM Certificate ARN here
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:region:account:certificate/your-cert-id
+    
+    # 6. Optional: Redirect all HTTP traffic to HTTPS
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
 
   tls:
   - hosts:
